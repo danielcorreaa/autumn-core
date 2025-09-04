@@ -103,8 +103,7 @@ Um projeto Autumn pode ser organizado da seguinte forma:
 ```
 src/main/java/com/seuprojeto
 │
-├── application
-│   └── App.java                  # Classe principal que inicia a aplicação
+├── App.java                      # Classe principal que inicia a aplicação
 │
 ├── config
 │   └── DataBaseConfig.java       # Configurações de banco de dados, beans etc.
@@ -259,9 +258,9 @@ public class UserController {
 @ControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handle(RuntimeException ex) {
-        return "Erro: " + ex.getMessage();
+    @ExceptionHandler(NotFoundException.class)
+    public MessageError handleIllegalArgument(NotFoundException ex) {
+        return new MessageError("", HttpStatus.NOT_FOUND_404, ex.getMessage(), "");
     }
 }
 ```
