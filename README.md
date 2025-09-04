@@ -193,7 +193,8 @@ Cliente (HTTP Response)
 
 ```java
 @Entity
-public class User {
+public class Cliente {
+	@Id
     private Long id;
     private String name;
     private String email;
@@ -203,24 +204,26 @@ public class User {
 ### 2. Repositório
 
 ```java
-@Repository
-public class UserRepository {
-    // Métodos para salvar, buscar e remover usuários
-}
+	@Repository
+	public interface ClienteRepositorio extends CrudRepository<Cliente, String> { }
 ```
 
 ### 3. Serviço
 
 ```java
 @Component
-public class UserService {
+public class ClienteService {
+
+    private final ClienteRepositorio clienteRepositorio;
 
     @Inject
-    private UserRepository userRepository;
+    public ClienteService(ClienteRepositorio clienteRepositorio) {
+        this.clienteRepositorio = clienteRepositorio;
+    }
 
-    public List<User> findAll() { ... }
-    public User findById(Long id) { ... }
-    public User save(User user) { ... }
+    public List<Cliente> findAll() { ... }
+    public Cliente findById(Long id) { ... }
+    public Cliente save(Cliente cliente) { ... }
     public void delete(Long id) { ... }
 }
 ```
@@ -229,23 +232,23 @@ public class UserService {
 
 ```java
 @Controller
-@RequestPath("/users")
-public class UserController {
+@RequestPath("/clientes")
+public class ClienteController {
 
     @Inject
     private UserService userService;
 
     @GetMapping
-    public List<User> listAll() { ... }
+    public List<Cliente> listAll() { ... }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) { ... }
+    public Cliente getById(@PathVariable Long id) { ... }
 
     @PostMapping
-    public User create(@RequestBody User user) { ... }
+    public Cliente create(@RequestBody Cliente cliente) { ... }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody User user) { ... }
+    public Cliente update(@PathVariable Long id, @RequestBody Cliente cliente) { ... }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) { ... }
@@ -277,11 +280,11 @@ public class App {
 
 ✅ Endpoints expostos:  
 
-- `GET /users` → Lista todos os usuários  
-- `GET /users/{id}` → Busca usuário por ID  
-- `POST /users` → Cria um novo usuário  
-- `PUT /users/{id}` → Atualiza um usuário existente  
-- `DELETE /users/{id}` → Remove um usuário  
+- `GET /clientes` → Lista todos os usuários  
+- `GET /clientes/{id}` → Busca usuário por ID  
+- `POST /clientes` → Cria um novo usuário  
+- `PUT /clientes/{id}` → Atualiza um usuário existente  
+- `DELETE /clientes/{id}` → Remove um usuário  
 
 ---
 
